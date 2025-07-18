@@ -1,0 +1,190 @@
+CREATE DATABASE LanguageLearningApp;
+USE LanguageLearningApp;
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE lessons (
+    lesson_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    link TEXT NOT NULL,
+    description TEXT,
+    content TEXT NOT NULL,
+    language VARCHAR(50) NOT NULL, -- Ví dụ: 'English', 'French', 'Japanese'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE progress (
+    progress_id INT AUTO_INCREMENT PRIMARY KEY,
+    progress_name VARCHAR(255),
+    description VARCHAR(255),
+    user_id INT NOT NULL,
+    lesson_id INT NOT NULL,
+    completed BOOLEAN DEFAULT FALSE,
+    last_accessed TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (lesson_id) REFERENCES lessons(lesson_id) ON DELETE CASCADE
+);
+
+CREATE TABLE scores (
+    score_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    lesson_id INT NOT NULL,
+    score INT NOT NULL CHECK (score BETWEEN 0 AND 100),
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (lesson_id) REFERENCES lessons(lesson_id) ON DELETE CASCADE
+);
+CREATE TABLE notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    message TEXT NOT NULL,
+    scheduled_time DATETIME NOT NULL,
+    status ENUM('pending', 'sent') DEFAULT 'pending',
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+INSERT INTO lessons (title, description, content, link, language) VALUES 
+('General english', 'English','1', 'https://www.cambridgeenglish.org/vn/test-your-english/general-english/', 'English'),
+('For schools', 'English','2', 'https://www.cambridgeenglish.org/vn/test-your-english/for-schools/', 'English'),
+('Young learners', 'English','3', 'https://www.cambridgeenglish.org/vn/test-your-english/young-learners/', 'English'),
+('Business', 'English','4', 'https://www.cambridgeenglish.org/vn/test-your-english/business/', 'English');
+INSERT INTO progress (lesson_id, user_id, progress_name, description)
+VALUES (1, 2, 'General english', 'Completed'),
+       (2, 2, 'Young learners', 'Completed');
+
+INSERT INTO lessons (title, description, content, link, language) VALUES 
+('Listening 1', 'English','5', 'https://study4.com/tests/224/practice/?part=729&part=730', 'English'),
+('Listening 2', 'English','6', 'https://study4.com/tests/224/practice/?part=731', 'English'),
+('Listening 3', 'English','7', 'https://study4.com/tests/224/practice/?part=732', 'English'),
+('Listening 4', 'English','8', 'https://study4.com/tests/225/practice/?part=736&part=737', 'English'),
+('Listening 5', 'English','9', 'https://study4.com/tests/225/practice/?part=738', 'English'),
+('Listening 6', 'English','10', 'https://study4.com/tests/225/practice/?part=739', 'English'),
+('Listening 7', 'English','11', 'https://study4.com/tests/226/practice/?part=743&part=744', 'English'),
+('Listening 8', 'English','12', 'https://study4.com/tests/226/practice/?part=745', 'English'),
+('Listening 9', 'English','13', 'https://study4.com/tests/226/practice/?part=746', 'English'),
+('Listening 10', 'English','14', 'https://study4.com/tests/227/practice/?part=750&part=751', 'English'),
+('Listening 11', 'English','15', 'https://study4.com/tests/22̃7/practice/?part=752', 'English'),
+('Listening 12', 'English','16', 'https://study4.com/tests/227/practice/?part=753', 'English'),
+('Listening 13', 'English','17', 'https://study4.com/tests/228/practice/?part=757&part=758', 'English'),
+('Listening 14', 'English','18', 'https://study4.com/tests/228/practice/?part=759', 'English'),
+('Listening 15', 'English','19', 'https://study4.com/tests/228/practice/?part=760', 'English'),
+('Listening 16', 'English','20', 'https://study4.com/tests/1209/practice/?part=3124&part=3131', 'English'),
+('Listening 17', 'English','21', 'https://study4.com/tests/1209/practice/?part=3126', 'English'),
+('Listening 18', 'English','22', 'https://study4.com/tests/1209/practice/?part=3127', 'English'),
+('Listening 19', 'English','23', 'https://study4.com/tests/1214/practice/?part=3160&part=3167', 'English'),
+('Listening 20', 'English','24', 'https://study4.com/tests/1214/practice/?part=3162', 'English'),
+('Listening 21', 'English','25', 'https://study4.com/tests/1214/practice/?part=3163', 'English'),
+('Listening 22', 'English','26', 'https://study4.com/tests/1211/practice/?part=3139&part=3140', 'English'),
+('Listening 23', 'English','27', 'https://study4.com/tests/1211/practice/?part=3141', 'English'),
+('Listening 24', 'English','28', 'https://study4.com/tests/1211/practice/?part=3142', 'English'),
+('Listening 25', 'English','29', 'https://study4.com/tests/1212/practice/?part=3146&part=3147', 'English'),
+('Listening 26', 'English','30', 'https://study4.com/tests/1212/practice/?part=3148', 'English'),
+('Listening 27', 'English','31', 'https://study4.com/tests/1212/practice/?part=3149', 'English'),
+('Listening 28', 'English','32', 'https://study4.com/tests/1213/practice/?part=3153&part=3154', 'English'),
+('Listening 29', 'English','33', 'https://study4.com/tests/1213/practice/?part=3155', 'English'),
+('Listening 30', 'English','34', 'https://study4.com/tests/1213/practice/?part=3156', 'English');
+INSERT INTO lessons (title, description, content, link, language) VALUES 
+('Reading 1', 'English','35', 'https://study4.com/tests/224/practice/?part=733', 'English'),
+('Reading 2', 'English','36', 'https://study4.com/tests/224/practice/?part=734', 'English'),
+('Reading 3', 'English','37', 'https://study4.com/tests/224/practice/?part=735', 'English'),
+('Reading 4', 'English','38', 'https://study4.com/tests/225/practice/?part=740', 'English'),
+('Reading 5', 'English','39', 'https://study4.com/tests/225/practice/?part=741', 'English'),
+('Reading 6', 'English','40', 'https://study4.com/tests/225/practice/?part=742', 'English'),
+('Reading 7', 'English','41', 'https://study4.com/tests/226/practice/?part=747', 'English'),
+('Reading 8', 'English','42', 'https://study4.com/tests/226/practice/?part=748', 'English'),
+('Reading 9', 'English','43', 'https://study4.com/tests/226/practice/?part=749', 'English'),
+('Reading 10', 'English','44', 'https://study4.com/tests/227/practice/?part=754', 'English'),
+('Reading 11', 'English','45', 'https://study4.com/tests/227/practice/?part=755', 'English'),
+('Reading 12', 'English','46', 'https://study4.com/tests/227/practice/?part=756', 'English'),
+('Reading 13', 'English','47', 'https://study4.com/tests/228/practice/?part=761', 'English'),
+('Reading 14', 'English','48', 'https://study4.com/tests/228/practice/?part=762', 'English'),
+('Reading 15', 'English','49', 'https://study4.com/tests/228/practice/?part=763', 'English'),
+('Reading 16', 'English','50', 'https://study4.com/tests/1209/practice/?part=3128', 'English'),
+('Reading 17', 'English','51', 'https://study4.com/tests/1209/practice/?part=3129', 'English'),
+('Reading 18', 'English','52', 'https://study4.com/tests/1209/practice/?part=3130', 'English'),
+('Reading 19', 'English','53', 'https://study4.com/tests/1214/practice/?part=3164', 'English'),
+('Reading 20', 'English','54', 'https://study4.com/tests/1214/practice/?part=3165', 'English'),
+('Reading 21', 'English','55', 'https://study4.com/tests/1214/practice/?part=3166', 'English'),
+('Reading 22', 'English','56', 'https://study4.com/tests/1211/practice/?part=3143', 'English'),
+('Reading 23', 'English','57', 'https://study4.com/tests/1211/practice/?part=3144', 'English'),
+('Reading 24', 'English','58', 'https://study4.com/tests/1211/practice/?part=3145', 'English'),
+('Reading 25', 'English','59', 'https://study4.com/tests/1212/practice/?part=3150', 'English'),
+('Reading 26', 'English','60', 'https://study4.com/tests/1212/practice/?part=3151', 'English'),
+('Reading 27', 'English','61', 'https://study4.com/tests/1212/practice/?part=3152', 'English'),
+('Reading 28', 'English','62', 'https://study4.com/tests/1213/practice/?part=3157', 'English'),
+('Reading 29', 'English','63', 'https://study4.com/tests/1213/practice/?part=3158', 'English'),
+('Reading 30', 'English','64', 'https://study4.com/tests/1213/practice/?part=3159', 'English');
+INSERT INTO lessons (title, description, content, link, language) VALUES 
+('Writing 1', 'English','65', 'https://englishpracticetest.net/writing-a-persuasive-email-b2-english-writing-test/', 'English'),
+('Writing 2', 'English','66', 'https://englishpracticetest.net/writing-a-review-b2-english-writing-test/', 'English'),
+('Writing 3', 'English','67', 'https://englishpracticetest.net/writing-an-essay-b2-english-writing-test/', 'English'),
+('Writing 4', 'English','68', 'https://englishpracticetest.net/essay-b2-first-for-schools-writing/', 'English'),
+('Writing 5', 'English','69', 'https://englishpracticetest.net/email-letter-b2-first-for-schools-writing/', 'English'),
+('Writing 6', 'English','70', 'https://englishpracticetest.net/article-b2-first-for-schools-writing/', 'English'),
+('Writing 7', 'English','71', 'https://englishpracticetest.net/write-an-article-about-your-experience-b2-english-writing-test/', 'English'),
+('Writing 8', 'English','72', 'https://englishpracticetest.net/writing-an-article-b2-english-writing-test/', 'English'),
+('Writing 9', 'English','73', 'https://englishpracticetest.net/write-a-travel-blog-about-a-place-youve-been-to-b2-english-writing-test/', 'English'),
+('Writing 10', 'English','74', 'https://englishpracticetest.net/write-a-review-of-a-film-you-enjoyed-or-hated-b2-english-writing-test/', 'English'),
+('Writing 11', 'English','75', 'https://www.examenglish.com/IELTS/IELTS_general_writing_part1_1.htm', 'English'),
+('Writing 12', 'English','76', 'https://www.examenglish.com/IELTS/IELTS_general_writing_part1_2.htm', 'English'),
+('Writing 13', 'English','77', 'https://www.examenglish.com/IELTS/IELTS_general_writing_part1_3.htm', 'English'),
+('Writing 14', 'English','78', 'https://www.examenglish.com/IELTS/IELTS_writing2.htm', 'English'),
+('Writing 15', 'English','79', 'https://www.examenglish.com/IELTS/IELTS_general_writing_part2_2.htm', 'English'),
+('Writing 16', 'English','80', 'https://www.examenglish.com/IELTS/IELTS_general_writing_part2_3.htm', 'English'),
+('Writing 17', 'English','81', 'https://englishpracticetest.net/writing-a-description-of-a-friend-b1-english-writing-test/', 'English'),
+('Writing 18', 'English','82', 'https://englishpracticetest.net/writing-a-story-b1-english-writing-test/', 'English'),
+('Writing 19', 'English','83', 'https://englishpracticetest.net/writing-an-article-b1-english-writing-test/', 'English'),
+('Writing 20', 'English','84', 'https://englishpracticetest.net/writing-an-informal-email-b1-english-writing-test/', 'English'),
+('Writing 21', 'English','85', 'https://englishpracticetest.net/writing-a-review-b1-english-writing-test/', 'English'),
+('Writing 22', 'English','86', 'https://englishpracticetest.net/how-to-make-your-writing-more-interesting-b1-preliminary-for-schools-writing/', 'English'),
+('Writing 23', 'English','87', 'https://englishpracticetest.net/writing-part-1-an-email-b1-preliminary-for-schools-writing/', 'English'),
+('Writing 24', 'English','88', 'https://englishpracticetest.net/writing-part-2-an-article-b1-preliminary-for-schools-writing/', 'English'),
+('Writing 25', 'English','89', 'https://englishpracticetest.net/writing-a-review-a2-english-writing-test/', 'English'),
+('Writing 26', 'English','90', 'https://englishpracticetest.net/writing-an-article-a2-english-writing-test/', 'English'),
+('Writing 27', 'English','91', 'https://englishpracticetest.net/writing-an-email-a2-english-writing-test/', 'English'),
+('Writing 28', 'English','92', 'https://englishpracticetest.net/writing-a-story-a2-english-writing-test/', 'English'),
+('Writing 29', 'English','93', 'https://englishpracticetest.net/writing-part-2-a-story-b1-preliminary-for-schools-writing/', 'English'),
+('Writing 30', 'English','94', 'https://englishpracticetest.net/making-a-story-interesting-b2-english-writing-test/', 'English');
+INSERT INTO lessons (title, description, content, link, language) VALUES 
+('Speaking 1', 'English','95', 'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/speaking/part-1', 'English'),
+('Speaking 2', 'English','96', 'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/speaking/part-2', 'English'),
+('Speaking 3', 'English','97', 'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/speaking/part-3', 'English'),
+('Speaking 4', 'English','98', 'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/speaking-2/part-1', 'English'),
+('Speaking 5', 'English','99', 'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/speaking-2/part-2', 'English'),
+('Speaking 6', 'English','100', 'https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-english-practice-tests/speaking-2/part-3', 'English'),
+('Speaking 7', 'English','101', 'https://speak.speechace.co/placement/courses/88/quizzes/435/speakingTest/1', 'English'),
+('Speaking 8', 'English','102', 'https://speak.speechace.co/placement/courses/89/quizzes/436/speakingTest/1', 'English'),
+('Speaking 9', 'English','103', 'https://speak.speechace.co/placement/courses/91/quizzes/438/speakingTest/1', 'English'),
+('Speaking 10', 'English','104', 'https://speak.speechace.co/placement/courses/90/quizzes/437/speakingTest/1', 'English'),
+('Speaking 11', 'English','105', 'https://speak.speechace.co/placement/courses/92/quizzes/439/speakingTest/1', 'English'),
+('Speaking 12', 'English','106', 'https://speak.speechace.co/placement/courses/93/quizzes/440/speakingTest/1', 'English'),
+('Speaking 13', 'English','107', 'https://speak.speechace.co/placement/courses/94/quizzes/441/speakingTest/1', 'English'),
+('Speaking 14', 'English','108', 'https://speak.speechace.co/placement/courses/95/quizzes/442/speakingTest/1', 'English'),
+('Speaking 15', 'English','109', 'https://speak.speechace.co/placement/courses/96/quizzes/443/speakingTest/1', 'English'),
+('Speaking 16', 'English','110', 'https://speak.speechace.co/placement/courses/97/quizzes/444/speakingTest/1', 'English'),
+('Speaking 17', 'English','111', 'https://speak.speechace.co/placement/courses/98/quizzes/445/speakingTest/1', 'English'),
+('Speaking 18', 'English','112', 'https://speak.speechace.co/placement/courses/99/quizzes/446/speakingTest/1', 'English'),
+('Speaking 19', 'English','113', 'https://speak.speechace.co/placement/courses/100/quizzes/447/speakingTest/1', 'English'),
+('Speaking 20', 'English','114', 'https://speak.speechace.co/placement/courses/101/quizzes/448/speakingTest/1', 'English'),
+('Speaking 21', 'English','115', 'https://speak.speechace.co/placement/courses/104/quizzes/450/speakingTest/1', 'English'),
+('Speaking 22', 'English','116', 'https://speak.speechace.co/placement/courses/102/quizzes/449/speakingTest/1', 'English'),
+('Speaking 23', 'English','117', 'https://speak.speechace.co/placement/courses/105/quizzes/451/speakingTest/1', 'English'),
+('Speaking 24', 'English','118', 'https://speak.speechace.co/placement/courses/106/quizzes/452/speakingTest/1', 'English'),
+('Speaking 25', 'English','119', 'https://speak.speechace.co/placement/courses/107/quizzes/453/speakingTest/1', 'English'),
+('Speaking 26', 'English','120', 'http://learnenglish.vn/ielts-speaking/test1/ielts-speaking-test-model-part-1/', 'English'),
+('Speaking 27', 'English','121', 'http://learnenglish.vn/ielts-speaking/test1/ielts-speaking-test-part-1-birds/', 'English'),
+('Speaking 28', 'English','122', 'http://learnenglish.vn/ielts-speaking/test1/ielts-speaking-test-part-1-birthdays/', 'English'),
+('Speaking 29', 'English','123', 'http://learnenglish.vn/ielts-speaking/test1/ielts-speaking-test-part-1-children/', 'English'),
+('Speaking 30', 'English','124', 'http://learnenglish.vn/ielts-speaking/test1/ielts-speaking-test-part-1-city-life/', 'English');
+
+SHOW COLUMNS FROM feedback;
+CREATE TABLE feedback (
+    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
